@@ -2,6 +2,7 @@ package st.examples;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.ServletException;
@@ -42,7 +43,7 @@ public class HelloWorldWithJetty extends HttpServlet {
     }
 
     public static void main(String[] args) throws Exception {
-        Server server = new Server(Integer.valueOf(System.getenv("PORT")));
+        Server server = new Server(8085);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
@@ -50,5 +51,14 @@ public class HelloWorldWithJetty extends HttpServlet {
         server.start();
         server.join();
     }
+
+//    public static void startTestServer() throws Exception {
+//        ServletHandler servletHandler = new ServletHandler();
+//        servletHandler.addServletWithMapping(TestServlet.class, "/*");
+//
+//        server = new Server(SOLR_SERVICE_PORT);
+//        server.setHandler(servletHandler);
+//        server.start();
+//    }
 
 }
