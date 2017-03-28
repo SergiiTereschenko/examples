@@ -33,6 +33,7 @@
 
     <modules>
         <module>java-concurrency</module>
+        <module>spring</module>
     </modules>
 
 </project>
