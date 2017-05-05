@@ -5,19 +5,21 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class PCBlockingQueue {
     private static Random random = new Random();
-    private static boolean sharedNonStop = true;
-    final static ReentrantLock lock = new ReentrantLock();
+    private static volatile boolean sharedNonStopTrigger = true;
 
     static int random() {
+        return random.nextInt(2000);
+    }
+
+    static int random2() {
         return random.nextInt(3000);
     }
 
     public static void main(String args[]) {
-        BlockingDeque<Integer> sharedQueue = new LinkedBlockingDeque<Integer>(5);
+        BlockingDeque<Integer> sharedQueue = new LinkedBlockingDeque<Integer>(10);
 
         Thread commandLineReaderThread = new Thread(new CommandLineReader(), "Command-Line-Reader");
         Thread prodThread = new Thread(new Producer(sharedQueue), "PRODUCER");
@@ -37,21 +39,17 @@ public class PCBlockingQueue {
         }
 
         public void run() {
-            while (sharedNonStop) {
+            while (sharedNonStopTrigger) {
                 try {
                     Thread.sleep(random());
 
-                    lock.lock();
-
                     Integer last = sharedQueue.peekLast();
                     int in = last == null ? 1 : ++last;
-                    System.out.println("Produced: " + in + " , sharedNonStop = " + sharedNonStop);
+                    System.out.println("Produced: " + in + " , sharedNonStopTrigger = " + sharedNonStopTrigger);
                     sharedQueue.putLast(in);
 
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                } finally {
-                    lock.unlock();
                 }
             }
             System.out.println("Stop called Producer");
@@ -67,17 +65,15 @@ public class PCBlockingQueue {
         }
 
         public void run() {
-            while (sharedNonStop) {
+            while (sharedNonStopTrigger) {
                 try {
-                    Thread.sleep(random());
+                    Thread.sleep(random2());
 
-                    lock.lock();
-                    System.out.println("Consumed: " + sharedQueue.takeLast() + " , sharedNonStop = " + sharedNonStop);
+                    Integer last = sharedQueue.pollLast();
+                    System.out.println("Consumed: " + last + " , sharedNonStopTrigger = " + sharedNonStopTrigger);
 
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                } finally {
-                    lock.unlock();
                 }
             }
             System.out.println("Stop called Consumer");
@@ -92,7 +88,7 @@ public class PCBlockingQueue {
                 System.out.println(" - CommandLineReader ready to read - ");
                 String s = scan.nextLine();
                 if ("f".equals(s)) {
-                    sharedNonStop = false;
+                    sharedNonStopTrigger = false;
                     return;
                 }
                 try {
