@@ -10,7 +10,7 @@ public class DiffUtilTest {
     @Test
     public void testDiffChecker() {
 //        Assert.assertTrue(DiffUtils.diffChecker(1, 2, 3));
-//        Assert.assertTrue(DiffUtils.diffChecker(2, 6, 4));
+        Assert.assertTrue(DiffUtils.diffChecker(2, 6, 4));
 //        Assert.assertTrue(DiffUtils.diffChecker(5, -1, 2));
 //        Assert.assertFalse(DiffUtils.diffChecker(1, 7, 3));
 //        Assert.assertFalse(DiffUtils.diffChecker(2, 8, 2));
