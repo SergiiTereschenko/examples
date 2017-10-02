@@ -11,8 +11,8 @@ package com.st.javavagent;
  * public static void premain(String args, Instrumentation inst);
  */
 
-public class Agent007 {
+public class AgentSimple1 {
     public static void premain(String args) {
-        System.out.println("Hello! I`m java-agent");
+        System.out.println("Hello! I`m java-agent :> he-he");
     }
 }
