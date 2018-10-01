@@ -9,6 +9,9 @@
     <groupId>org.springframework</groupId>
     <artifactId>gs-relational-data-access</artifactId>
     <version>0.1.0</version>
+
+    <packaging>pom</packaging>
+
     <modules>
         <module>spring-mongo</module>
     </modules>
