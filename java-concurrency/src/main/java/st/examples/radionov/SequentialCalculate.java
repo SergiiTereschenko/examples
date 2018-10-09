@@ -2,6 +2,8 @@ package st.examples.radionov;
 
 public class SequentialCalculate {
 
+    //https://www.youtube.com/watch?v=W82D9eUn6q8
+    //https://www.slideshare.net/yandex/java-threads-37348280
     public double calculate(double start, double end, double step) {
 
         double result = 0.0;
