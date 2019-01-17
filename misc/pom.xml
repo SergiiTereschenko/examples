@@ -18,6 +18,32 @@
              <artifactId>javassist</artifactId>
              <version>3.21.0-GA</version>
          </dependency>
+
+         <dependency>
+             <groupId>org.jsoup</groupId>
+             <artifactId>jsoup</artifactId>
+             <version>1.9.1</version>
+         </dependency>
+
+         <dependency>
+             <groupId>org.apache.commons</groupId>
+             <artifactId>commons-lang3</artifactId>
+             <version>3.7</version>
+         </dependency>
+
+         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+         <dependency>
+             <groupId>commons-io</groupId>
+             <artifactId>commons-io</artifactId>
+             <version>2.6</version>
+         </dependency>
+
+         <dependency>
+             <groupId>junit</groupId>
+             <artifactId>junit</artifactId>
+             <version>4.12</version>
+         </dependency>
+
      </dependencies>
 
 
