@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Iteration {
@@ -205,6 +206,44 @@ public class Iteration {
             }
         }
         System.out.println("End.");
+    }
+
+    @Test
+    public void findOneArrayIntoAnother() {
+        int[] a = {7,65,456,67,23,98,565,77,56,4,45,67,45,547,8,855,9,3,44,3,7,79,5,8,890,56,4,5,6,7,8,9,848,11,158,16,19,98,54,54,65,59,54,1541,541,5,1,560,37,246,23,35,23,23,23,2,4,57567,45,5,5456,35346,456,456,5,75,};
+        int[] b = {855, 848, 98,6,2,3,4,5,8,44};
+
+        int[] tmpA = new int[100000];
+
+        for (int ia : a) {
+//            if (tmpA.length < ia) {
+//                tmpA =
+//            }
+            tmpA[ia] = ia;
+        }
+
+        for (int ib : b) {
+            try {
+                if (tmpA[ib] == 0) {
+                    System.out.println("Array b doesn't included into array a");
+                    return;
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Array b doesn't included into array a");
+                return;
+            }
+        }
+        System.out.println("Bingo! Array b included into array a");
+
+    }
+
+    @Test
+    public void compareAndSwapTest() {
+
+        AtomicInteger ai = new AtomicInteger();
+        ai.incrementAndGet();
+        ai.compareAndSet(1, 2);
+
     }
 
 }

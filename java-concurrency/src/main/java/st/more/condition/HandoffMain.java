@@ -1,0 +1,43 @@
+package st.more.condition;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.*;
+
+public class HandoffMain {
+
+    private static final Logger logger = LoggerFactory.getLogger(HandoffMain.class);
+
+
+    public static void main(String[] args) throws InterruptedException {
+        Handoff<Object> handoff;
+        handoff = new IntrinsicHandoff<>();
+//        handoff = new ExplicitHandoff<>();
+//        handoff = new AqsHandoff<>();
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        CompletionService<Void> cs = new ExecutorCompletionService<Void>(executorService);
+        int numTakers = 3;
+        for (int i = 0; i < numTakers; i++) {
+            cs.submit(new HandoffTaker(handoff), null);
+        }
+
+        int numGivers = numTakers;
+        for (int i = 0; i < numGivers; i++) {
+            cs.submit(new HandoffGiver(handoff), null);
+        }
+
+        for (int i = 0; i < numGivers + numTakers; i++) {
+            Future<Void> future = cs.take();
+            try {
+                future.get();
+            } catch (ExecutionException e) {
+                logger.warn("Task failed with " + e.getCause());
+            }
+        }
+
+        executorService.shutdown();
+    }
+
+}
