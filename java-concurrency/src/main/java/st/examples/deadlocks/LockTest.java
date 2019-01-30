@@ -4,48 +4,76 @@ package st.examples.deadlocks;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Shows difference in thread-dump  (Run main, then, Ctrl + Break to see)    logs vs different locks.
- * You will get "waiting to lock" in the thread dump when using intrinsic locks (synchronized)
- * and "parking to wait for" when using locks from java.util.concurrent (ReentrantLock).
- */
+
 public class LockTest {
 
-
-    final Lock lock = new ReentrantLock(true);
-
-    synchronized void intrinsicLock() {
-        Thread th = new Thread(new Runnable() {
-            public void run() {
-                intrinsicLock();
-            }
-        }, "-My Intrinsic thread-");
-        th.start();
-        try {
-            th.join();
-        } catch (InterruptedException e) {
-        }
-    }
-
-    void reentrantLock() {
-        lock.lock();
-        Thread th = new Thread(new Runnable() {
-            public void run() {
-                reentrantLock();
-            }
-        }, "-My ReentrantLock thread-");
-        th.start();
-        try {
-            th.join();
-        } catch (InterruptedException e) {
-        }
-        lock.unlock();
-    }
-
+    Object lock1 = new Object();
+    Object lock2 = new Object();
 
     public static void main(String[] args) {
-        LockTest lockTest = new LockTest();
-//        lockTest.intrinsicLock();
-        lockTest.reentrantLock();
+
+        Account a = new Account();
+        Account b = new Account();
+
+        AccTransfer tr1 = new AccTransfer(a, b, 30);
+        AccTransfer tr2 = new AccTransfer(b, a, 40);
+
+        tr1.start();
+        tr2.start();
+
     }
+
+//    void transfer(Account acc1, Account acc2, int sum) throws InterruptedException {
+//        synchronized (acc1) {
+//            Thread.sleep(1000);
+//            synchronized (acc2) {
+//                acc1.amount = acc1.amount + sum;
+//                acc2.amount = acc2.amount - sum;
+//            }
+//        }
+//    }
+
+//    void task2() throws InterruptedException {
+//        synchronized (lock2) {
+//            Thread.sleep(1000);
+//            synchronized (lock1) {
+//                System.out.println("Task2 execution");
+//            }
+//        }
+//    }
+}
+
+class AccTransfer extends Thread {
+    Account a;
+    Account b;
+    int summ;
+
+    public AccTransfer(Account a, Account b, int summ) {
+        this.a = a;
+        this.b = b;
+        this.summ = summ;
+    }
+
+    @Override
+    public void run() {
+        transfer(a, b, summ);
+    }
+
+    void transfer(Account acc1, Account acc2, int sum)  {
+        synchronized (acc1) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            synchronized (acc2) {
+                acc1.amount = acc1.amount + sum;
+                acc2.amount = acc2.amount - sum;
+            }
+        }
+    }
+
+}
+
+class Account {
+    int amount = 100;
 }

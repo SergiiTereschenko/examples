@@ -1,6 +1,7 @@
 package st.more.dns;
 
-import com.google.common.base.Charsets;
+//import com.google.common.base.Charsets;
+import org.apache.commons.codec.Charsets;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 import javax.annotation.concurrent.Immutable;

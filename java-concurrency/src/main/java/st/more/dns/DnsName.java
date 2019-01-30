@@ -1,7 +1,7 @@
 package st.more.dns;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Splitter;
+//import com.google.common.base.Charsets;
+//import com.google.common.base.Splitter;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ public class DnsName implements Encodable {
      */
     public DnsName(String name) {
         List<DnsLabel> labels = new ArrayList<DnsLabel>();
-        for (String s : Splitter.on(".").split(name)) {
-            labels.add(new DnsLabel(s.getBytes(Charsets.US_ASCII)));
-        }
+//        for (String s : Splitter.on(".").split(name)) {
+//            labels.add(new DnsLabel(s.getBytes(Charsets.US_ASCII)));
+//        }
 
         this.labels = labels;
     }
