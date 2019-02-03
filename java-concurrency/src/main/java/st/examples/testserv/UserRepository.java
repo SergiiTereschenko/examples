@@ -1,11 +1,12 @@
-package st.examples.XP;
+package st.examples.testserv;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class UserRepository {
 
-//    private ConcurrentMap store = new ConcurrentSkipListMap();
+    //    private ConcurrentMap store = new ConcurrentSkipListMap();
+//    private Map<String, User> store = new HashMap<>();
     private ConcurrentMap<String, User> store = new ConcurrentHashMap<>();
 
     public User get(String userId) {
@@ -16,9 +17,7 @@ public class UserRepository {
         return user;
     }
 
-    public void register(User user) {
-          store.put(user.id, user);
+    public void save(User user) {
+        store.put(user.id, user);
     }
-
-
 }
