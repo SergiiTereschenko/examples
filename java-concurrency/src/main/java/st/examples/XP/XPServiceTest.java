@@ -4,13 +4,14 @@ import org.junit.Test;
 
 public class XPServiceTest {
 
-    XPService processor = new XPServiceImpl();
+    XPService xpService = new XPServiceImpl();
 
     @Test
     public void testStoreXp() {
+
         String id = "123";
         int xp  = 1;
-        processor.storeXp(id, xp);
+        xpService.storeXp(id, xp);
     }
 
 }

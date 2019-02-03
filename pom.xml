@@ -35,6 +35,7 @@
         <module>java-concurrency</module>
         <module>spring</module>
         <module>misc</module>
+        <module>spring-jsp</module>
     </modules>
 
 </project>

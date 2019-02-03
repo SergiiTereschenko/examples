@@ -38,8 +38,8 @@ public class Iteration {
     @Test
     public void binaryGap() {
         int n = 1041;
-        String binary = Integer.toBinaryString(n);
-//        String binary = "001110001010000100000";
+//        String binary = Integer.toBinaryString(n);
+        String binary = "001110001010000100000";
         char[] chars = binary.toCharArray();
         boolean gapsBegin = false;
         int maxZeros = 0;
@@ -221,6 +221,9 @@ public class Iteration {
 //            }
             tmpA[ia] = ia;
         }
+//        Set<Integer> set2 = new HashSet<>();
+//        Collections.addAll(set2, a);
+//        Set<Integer> set = new HashSet<Integer>(Arrays.<Integer>asList(a));
 
         for (int ib : b) {
             try {
