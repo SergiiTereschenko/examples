@@ -1,52 +1,86 @@
 package st.examples.testserv;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
 
 public class StpServiceImpl implements StpService {
-
-    private UserRepository userRepo = new UserRepository();
-    private EventSender sender = new EventSender();
+    //    private EventSender sender = new EventSender();
+    //    private UserRepository userRepo = new UserRepository();
+    private ConcurrentMap<String, User> store = new ConcurrentHashMap<>();
+    Set<Consumer> listeners = Collections.synchronizedSet(new HashSet<Consumer>());
+    Set<String> strings = Collections.synchronizedSet(new HashSet<String>());
 
     @Override
-    public void storeXp(String userId, int xp) {
-        synchronized (userId) {
-            User user = userRepo.get(userId);
+    public void storeXp(long userId, int xp) {
+        String id = (userId + "").intern();
+        synchronized (id) {
+            User user = getOrCreateUser(id);
             int prevXp = user.xp;
-            try {
-                TimeUnit.MILLISECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             user.xp = prevXp + xp;
             System.out.println("Get user: " + Thread.currentThread().getName());
-            System.out.println("User old: " + prevXp + " User new: " + user.xp);
-//          userRepo.save(user);
-            sender.sendEvent(user, prevXp, user.xp);
+            System.out.println("UserId: " + id + "; prevXp: " + prevXp + "; newXp: " + user.xp);
+
+            sendEvent(userId, prevXp, user.xp);
         }
+    }
+
+    private User getOrCreateUser(String id) {
+        User user = store.get(id);
+        if (user == null) {
+            user = new User(id, 0);
+            store.put(id, user);
+        }
+        return user;
     }
 
     @Override
     public int getLevel(String userId) {
-        User user = userRepo.get(userId);
+        User user = getOrCreateUser(userId);
         return StpToLevelUtils.getLevel(user.xp);
     }
 
     @Override
-    public int getXp(String userId) {
-        User user = userRepo.get(userId);
+    public int getXp(long userId) {
+        String id = userId + "";
+        User user = getOrCreateUser(id);
         return user.xp;
     }
 
+//    @Override
+//    public void subscribe(String userId, String listenerId) {
+//        synchronized (userId) {
+//            User user = getOrCreateUser(userId);
+//            user.subscribers.add(new SubscriberListener(listenerId));
+////          userRepo.save(user);
+//        }
+//    }
+
     @Override
-    public void subscribe(String userId, String listenerId) {
-        synchronized (userId) {
-            User user = userRepo.get(userId);
-            user.subscribers.add(new SubscriberListener(listenerId));
-//          userRepo.save(user);
-        }
+    public void subscribe(Consumer<SubscriberListener> consumer) {
+        listeners.add(consumer);
     }
 
-    public UserRepository getUserRepo() {
-        return userRepo;
+    public Set<Consumer> getListeners() {
+        return listeners;
+    }
+
+    public void sendEvent(long userId, int prevXp, int newXp) {
+        List<Integer> levels = StpToLevelUtils.getLevels(prevXp, newXp);
+        levels.forEach(l -> {
+            for (Consumer consumer : listeners) {
+                consumer.accept(SubscriberListener.builder().userId(userId).userXp(newXp).build());
+//                consumer.accept(new SubscriberListener(userId, newXp));
+            }
+        });
+    }
+
+    public Map<String, User> getUserRepo() {
+        return store;
     }
 }

@@ -5,52 +5,87 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.assertEquals;
+import java.util.function.Consumer;
 
 public class TStpServiceTest {
 
     StpServiceImpl stpService = new StpServiceImpl();
+    ConcurrentLinkedQueue<SubscriberListener> linkedQueue = new ConcurrentLinkedQueue<>();
+
 
     @Test
     public void testStoreXp() {
+        int MAX_SIZE = 123;
+        String id1 = "123";
+        String id2 = "123";
+        String id3 = MAX_SIZE + "";
+        String id4 = "123123";
+        String id5 = id1 + id2;
+        System.out.println("12: " + (id1 == id2));
+        System.out.println("23: " + (id2 == id3));
+        id3 = id3.intern();
+        System.out.println("23*: " + (id2 == id3));
+        System.out.println("13: " + (id1 == id3));
+        System.out.println("45: " + (id4 == id5));
+
+        long userId = 123;
         String id = "123";
-        stpService.getUserRepo().save(new User(id, 0));
+//        stpService.getUserRepo().save(new User(id, 0));
         int xp  = 99;
-        stpService.storeXp(id, xp);
+        stpService.storeXp(userId, xp);
         User user = stpService.getUserRepo().get(id);
         Assert.assertEquals(xp, user.xp);
     }
 
     @Test
     public void testConcurrentAdd() throws InterruptedException {
-        String id = "123";
-        int MAX_SIZE = 20;
-        stpService.getUserRepo().save(new User(id, 0));
-        ExecutorService executorService = Executors.newFixedThreadPool(MAX_SIZE);
+        int MAX_SIZE = 123;
+
+        List<Long> users = getUsers(1);
+//        stpService.getUserRepo().save(new User(id, 0));
+        stpService.subscribe(linkedQueue::add);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         List<Integer> consistentStpValues = new ArrayList<>();
 
-        for (int k = 0; k < MAX_SIZE; k++) {
-            executorService.execute(() -> {
-                System.out.println(Thread.currentThread().getName());
-                for (int i = 0; i < MAX_SIZE; i++) {
-                    stpService.storeXp(id, 1);
-                    consistentStpValues.add(stpService.getXp(id));
+        for (long k = 1; k <= 10; k++) {
+            executorService.submit(() -> {
+//                System.out.println(Thread.currentThread().getName());
+                for (long i = 1; i <= 1; i++) {
+                    stpService.storeXp(i, 1);
+                    consistentStpValues.add(stpService.getXp(i));
                 }
             });
         }
         executorService.shutdown();
-        executorService.awaitTermination(10, TimeUnit.SECONDS);
+        executorService.awaitTermination(10000, TimeUnit.SECONDS);
 
-        User user = stpService.getUserRepo().get(id);
-        Assert.assertEquals(MAX_SIZE * MAX_SIZE, consistentStpValues.size());
-        for (int i = 1; i <= MAX_SIZE * MAX_SIZE; i++) {
-            assertEquals(i, consistentStpValues.get(i - 1).intValue());
-        }
+        Map<String, User> user = stpService.getUserRepo();
+        Set<Consumer> listeners = stpService.getListeners();
 
+        Assert.assertEquals(100, consistentStpValues.size());
+//        for (int i = 1; i <= MAX_SIZE * MAX_SIZE; i++) {
+//            assertEquals(i, consistentStpValues.get(i - 1).intValue());
+//        }
     }
+
+    private List<Long> getUsers(long number) {
+        List<Long> users = new ArrayList<>();
+        for (long i = 0; i < number; i++) {
+            users.add(i);
+        }
+        return users;
+    }
+
+//    private void subscribeListeners(StpService service) {
+//        service.subscribe(linkedQueue::add);
+//
+//    }
 
 }

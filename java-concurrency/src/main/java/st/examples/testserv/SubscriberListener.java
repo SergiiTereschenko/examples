@@ -1,13 +1,21 @@
 package st.examples.testserv;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
+@AllArgsConstructor
+@Builder
 public class SubscriberListener {
-    String id;
-    List<String> levelsFired = new ArrayList<>();
+    long userId;
+    int userXp;
+//    List<String> levelsFired = new ArrayList<>();
 
-    public SubscriberListener(String id) {
-        this.id = id;
-    }
+//    public SubscriberListener(String id) {
+//        this.userId = Long.parseLong(id);
+//    }
+
+//    public SubscriberListener(long id) {
+//        this.userId = id;
+//    }
+
 }

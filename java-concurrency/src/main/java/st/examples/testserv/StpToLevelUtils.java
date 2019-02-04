@@ -35,11 +35,16 @@ public class StpToLevelUtils {
 //        }
 
 //        stpToLevels.put(0, 0);
-        stpToLevels.put(100, 1);
-        stpToLevels.put(200, 2);
-        stpToLevels.put(400, 3);
-        stpToLevels.put(1000, 4);
-        stpToLevels.put(2000, 5);
+        stpToLevels.put(1, 1);
+        stpToLevels.put(2, 2);
+        stpToLevels.put(3, 3);
+        stpToLevels.put(4, 4);
+        stpToLevels.put(5, 5);
+        stpToLevels.put(6, 6);
+        stpToLevels.put(7, 7);
+        stpToLevels.put(8, 8);
+        stpToLevels.put(9, 9);
+        stpToLevels.put(10, 10);
     }
 
     public static List<Integer> getLevels(int prevXP, int newXp) {
