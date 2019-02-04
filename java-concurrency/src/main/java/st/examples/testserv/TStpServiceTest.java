@@ -28,11 +28,11 @@ public class TStpServiceTest {
     @Test
     public void testConcurrentAdd() throws InterruptedException {
         String id = "123";
+        int MAX_SIZE = 20;
         stpService.getUserRepo().save(new User(id, 0));
-        ExecutorService executorService = Executors.newFixedThreadPool(20);
+        ExecutorService executorService = Executors.newFixedThreadPool(MAX_SIZE);
         List<Integer> consistentStpValues = new ArrayList<>();
 
-        int MAX_SIZE = 20;
         for (int k = 0; k < MAX_SIZE; k++) {
             executorService.execute(() -> {
                 System.out.println(Thread.currentThread().getName());
@@ -46,8 +46,8 @@ public class TStpServiceTest {
         executorService.awaitTermination(10, TimeUnit.SECONDS);
 
         User user = stpService.getUserRepo().get(id);
-        Assert.assertEquals(100, consistentStpValues.size());
-        for (int i = 1; i <= 100; i++) {
+        Assert.assertEquals(MAX_SIZE * MAX_SIZE, consistentStpValues.size());
+        for (int i = 1; i <= MAX_SIZE * MAX_SIZE; i++) {
             assertEquals(i, consistentStpValues.get(i - 1).intValue());
         }
 
