@@ -216,9 +216,6 @@ public class Iteration {
         int[] tmpA = new int[100000];
 
         for (int ia : a) {
-//            if (tmpA.length < ia) {
-//                tmpA =
-//            }
             tmpA[ia] = ia;
         }
 //        Set<Integer> set2 = new HashSet<>();
@@ -237,7 +234,6 @@ public class Iteration {
             }
         }
         System.out.println("Bingo! Array b included into array a");
-
     }
 
     @Test
