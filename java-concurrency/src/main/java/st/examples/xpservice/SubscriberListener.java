@@ -1,4 +1,4 @@
-package st.examples.testserv;
+package st.examples.xpservice;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package st.examples.radionov;
 
-class TT {
+class Zadrochestvo {
     private void one() {
         System.out.println("one1");
     }
@@ -29,7 +29,7 @@ public class SequentialCalculate {
 
     public static void main(String[] args) {
 
-        TT tt = new TT() {
+        Zadrochestvo tt = new Zadrochestvo() {
           public void one() {
               System.out.println("one over");
           }

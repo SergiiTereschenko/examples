@@ -1,11 +1,11 @@
-package st.examples.testserv;
+package st.examples.xpservice;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StpToLevelUtils {
+public class XpToLevelUtils {
 //    static String filePath = "src/main/resources/stpToLevels.txt";
     private static Map<Integer, Integer> stpToLevels = new LinkedHashMap<>();
     static {

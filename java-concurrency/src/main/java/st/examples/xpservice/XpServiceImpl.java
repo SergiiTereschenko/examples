@@ -1,4 +1,4 @@
-package st.examples.testserv;
+package st.examples.xpservice;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,9 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
-public class StpServiceImpl implements StpService {
-    //    private EventSender sender = new EventSender();
-    //    private UserRepository userRepo = new UserRepository();
+public class XpServiceImpl implements XpService {
     private ConcurrentMap<String, User> store = new ConcurrentHashMap<>();
     Set<Consumer> listeners = Collections.synchronizedSet(new HashSet<Consumer>());
     Set<String> strings = Collections.synchronizedSet(new HashSet<String>());
@@ -42,7 +40,7 @@ public class StpServiceImpl implements StpService {
     @Override
     public int getLevel(String userId) {
         User user = getOrCreateUser(userId);
-        return StpToLevelUtils.getLevel(user.xp);
+        return XpToLevelUtils.getLevel(user.xp);
     }
 
     @Override
@@ -71,7 +69,7 @@ public class StpServiceImpl implements StpService {
     }
 
     public void sendEvent(long userId, int prevXp, int newXp) {
-        List<Integer> levels = StpToLevelUtils.getLevels(prevXp, newXp);
+        List<Integer> levels = XpToLevelUtils.getLevels(prevXp, newXp);
         levels.forEach(l -> {
             for (Consumer consumer : listeners) {
                 consumer.accept(SubscriberListener.builder().userId(userId).userXp(newXp).build());

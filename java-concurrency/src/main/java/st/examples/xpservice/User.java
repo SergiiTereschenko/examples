@@ -1,4 +1,4 @@
-package st.examples.testserv;
+package st.examples.xpservice;
 
 import java.util.ArrayList;
 import java.util.List;
