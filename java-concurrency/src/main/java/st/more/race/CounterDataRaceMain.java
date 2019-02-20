@@ -14,15 +14,18 @@ final class CounterDataRaceMain {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newCachedThreadPool();
 
-        int numThreads = 2;
+        int numThreads = 10;
         CountDownLatch latch = new CountDownLatch(numThreads);
 
         List<Future<?>> futures = new ArrayList<>();
 
         for (int i = 0; i < numThreads; i++) {
             futures.add(executorService.submit(() -> {
+                System.out.println(Thread.currentThread().getName());
+
                 waitUntilReady(latch);
 
+                System.out.println("Goooo!");
                 for (int j = 0; j < 1_000_000; j++) {
                     // data race here
                     counter[0]++;

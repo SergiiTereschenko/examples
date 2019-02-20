@@ -1,5 +1,7 @@
 package st.examples.arrayintoarray;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -7,13 +9,17 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class Main {
-    public static void main(String[] args) {
-        final Object[] fixture1 = new Object[]{1, new Object[]{2, 3}, 4};
-        final Integer[] expected1 = new Integer[]{1, 2, 3, 4};
+public class SlavaTask {
 
-        final Object[] fixture2 = new Object[]{1, new Object[]{2, 3}, 4, new Object[]{5, new Object[]{6, new Object[]{7, 8}}, 9}, new Object[]{10}};
-        final Integer[] expected2 = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    @Test
+    public void test1() {
+        Object[] fixture1 = new Object[]{1, new Object[]{2, 3}, 4};
+        Integer[] expected1 = new Integer[]{1, 2, 3, 4};
+
+        Object[] fixture2 = new Object[]{1, new Object[]{2, 3}, 4, new Object[]{5, new Object[]{6, new Object[]{7, 8}}, 9}, new Object[]{10}};
+        Integer[] expected2 = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+        Thread thread = new Thread(() -> System.out.println("Hello World!"));
 
         FixtureIterator iterator1 = new FixtureIterator(fixture1);
         List<Integer> actual1 = new ArrayList();
@@ -35,11 +41,14 @@ public class Main {
     }
 
     private static Function<Object, Stream<Integer>> getMapper() {
-        return (element) -> {
-            if (element instanceof Integer) {
-                return Stream.of((Integer) element);
-            } else {
-                return Stream.of((Object[]) element).flatMap(getMapper());
+        return new Function<Object, Stream<Integer>>() {
+            @Override
+            public Stream<Integer> apply(Object element) {
+                if (element instanceof Integer) {
+                    return Stream.of((Integer) element);
+                } else {
+                    return Stream.of((Object[]) element).flatMap(getMapper());
+                }
             }
         };
     }
@@ -48,8 +57,8 @@ public class Main {
 
         private final Iterator<Integer> iterator;
 
-        public FixtureIterator(Object[] fixture) {
-            iterator = Stream.of(fixture).flatMap(getMapper()).iterator();
+        public FixtureIterator(Object[] array) {
+            iterator = Stream.of(array).flatMap(getMapper()).iterator();
         }
 
         @Override

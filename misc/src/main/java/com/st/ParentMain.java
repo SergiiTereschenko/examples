@@ -5,12 +5,13 @@ public class ParentMain {
 
     public static void main(String[] args) {
         Parent son = new Son();
+        System.out.println(son.a);
     }
 
 }
 
 class Parent {
-
+    int a = 1;
     public Parent() {
         print();
     }
@@ -21,6 +22,7 @@ class Parent {
 }
 
 class Son extends Parent{
+    int a = 2;
     private double pi = Math.PI;
 
     public Son() {
