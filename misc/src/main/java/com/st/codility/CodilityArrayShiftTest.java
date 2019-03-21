@@ -3,7 +3,7 @@ package com.st.codility;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ArrayShiftTest {
+public class CodilityArrayShiftTest {
 
     @Test
     public void shift1() {

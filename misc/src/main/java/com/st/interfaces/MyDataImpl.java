@@ -1,4 +1,4 @@
-package st.more.interfaces;
+package com.st.interfaces;
 
 public class MyDataImpl implements MyData {
 

@@ -1,4 +1,4 @@
-package st.examples.arrayintoarray;
+package com.st.arrayintoarray;
 
 import org.junit.Test;
 
@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 public class SlavaTask {
 
+    //task attendify
     @Test
     public void test1() {
         Object[] fixture1 = new Object[]{1, new Object[]{2, 3}, 4};

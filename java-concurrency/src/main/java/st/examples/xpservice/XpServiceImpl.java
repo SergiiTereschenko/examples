@@ -10,6 +10,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
 public class XpServiceImpl implements XpService {
+
+    //task playtika
+
     private ConcurrentMap<String, User> store = new ConcurrentHashMap<>();
     Set<Consumer> listeners = Collections.synchronizedSet(new HashSet<Consumer>());
     Set<String> strings = Collections.synchronizedSet(new HashSet<String>());

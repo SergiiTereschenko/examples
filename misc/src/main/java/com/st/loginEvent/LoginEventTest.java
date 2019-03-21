@@ -13,9 +13,18 @@ import java.util.stream.Collectors;
 
 public class LoginEventTest {
 
+    //task onedome
     @Test
     public void test() {
         List<LoginEvent> loginEvents = new ArrayList<>();
+
+//        LocalDateTime nowLDT = LocalDateTime.now();
+//        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+//        ZonedDateTime toZonedDateTime = offsetDateTime.toZonedDateTime();
+//        Instant nowInstant = Instant.now();
+//        System.out.println("nowLDT: " + nowLDT + " ; nowIstant: " + nowInstant);
+//        System.out.println("nowLDT: " + nowLDT + " ; offsetDateTime: " + offsetDateTime);
+//        System.out.println("nowLDT: " + nowLDT + " ; toZonedDateTie: " + toZonedDateTime);
 
         loginEvents.add(new LoginEvent(LocalDateTime.of(2019, Month.JANUARY, 1, 0, 0), "a"));
         loginEvents.add(new LoginEvent(LocalDateTime.of(2019, Month.JANUARY, 1, 10, 0), "a"));
@@ -34,11 +43,11 @@ public class LoginEventTest {
 
 //        loginEvents.sort((a, b) -> Long.compare(a.loginDate, b.loginDate));
 
-        List<String> usersToDays = findUserLoggedIn3Days(loginEvents);
+        List<String> usersToDays = findUserLoggedIn3DaysInRow(loginEvents);
         System.out.println(usersToDays);
     }
 
-    private List<String> findUserLoggedIn3Days(List<LoginEvent> events) {
+    private List<String> findUserLoggedIn3DaysInRow(List<LoginEvent> events) {
         Map<String, EventsInfo> usersToDays = new HashMap<>();
 
         for (LoginEvent event : events) {
@@ -53,7 +62,6 @@ public class LoginEventTest {
                 .filter(e -> e.getValue().is3DaysInRow())
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
-
         return collect;
     }
 }
@@ -67,7 +75,10 @@ class EventsInfo {
     }
 
     public void setLastVisit(LocalDateTime nextVisit) {
-        long between = ChronoUnit.HOURS.between(lastVisit, nextVisit);
+//        long between = ChronoUnit.HOURS.between(lastVisit, nextVisit);
+        long between = lastVisit.until(nextVisit, ChronoUnit.HOURS);
+
+
         if (between > 24) {
             days = 1;
         } else if (lastVisit.toLocalDate().until(nextVisit.toLocalDate(), ChronoUnit.DAYS) == 1) {

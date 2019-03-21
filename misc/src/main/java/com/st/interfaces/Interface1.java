@@ -1,6 +1,12 @@
-package st.more.interfaces;
+package com.st.interfaces;
 
-public interface MyData {
+public interface Interface1 {
+
+    void method1();
+
+    default void log(String str){
+        System.out.println("I1 logging::"+str);
+    }
 
     default void print(String str) {
         if (!isNull(str))
