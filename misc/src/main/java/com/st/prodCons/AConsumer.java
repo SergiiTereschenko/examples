@@ -1,22 +1,23 @@
-package com.st.prodcons;
+package com.st.prodCons;
 
 import java.util.Random;
 
-public class AProducer implements Runnable {
+public class AConsumer implements Runnable {
 
-    private Dropbox dropbox;
+    private final Dropbox dropbox;
+    private final boolean even;
 
-    public AProducer(Dropbox dropbox) {
+    public AConsumer(boolean even, Dropbox dropbox) {
+        this.even = even;
         this.dropbox = dropbox;
     }
 
     public void run() {
         Random random = new Random();
         while (true) {
-            int number = random.nextInt(10);
+            dropbox.take(even);
             try {
                 Thread.sleep(random.nextInt(100));
-                dropbox.put(number);
             } catch (InterruptedException e) { }
         }
     }
