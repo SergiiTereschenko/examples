@@ -1,9 +1,18 @@
-package com.st.codility;
+package com.st.misc;
+
+import java.util.ArrayList;
 
 import org.junit.Test;
 
 public class StringToIntTest {
 
+
+    @Test
+    public void testSingleton() {
+        Singleton singleton = Singleton.getInstance();
+    }
+
+    //Parse integer from arbitrary string, based on char value
     @Test
     public void test() {
         parseInt("12ADDF645DG%^%3");
@@ -32,5 +41,15 @@ public class StringToIntTest {
         for (int c = 0; c < 128; c++) {
             System.out.println(c + ": " + (char) c);
         }
+    }
+
+    @Test
+    public void unsafeVarargs() {
+        Object[] plant = Singleton.unsafe("1", 1);
+    }
+
+    @Test
+    public void safeVarargs() {
+        Object[] safe = Singleton.safe("1", 2);
     }
 }
