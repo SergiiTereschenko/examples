@@ -28,12 +28,17 @@
                 <artifactId>servlet-api</artifactId>
                 <version>2.5</version>
             </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.8</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <modules>
         <module>java-concurrency</module>
-        <module>spring</module>
+        <module>spring-test</module>
         <module>misc</module>
         <module>spring-jsp</module>
     </modules>
