@@ -1,4 +1,4 @@
-package st.examples.deadlocks;
+package st.examples.problems;
 
 import java.util.concurrent.*;
 

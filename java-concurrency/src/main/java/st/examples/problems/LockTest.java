@@ -1,8 +1,4 @@
-package st.examples.deadlocks;
-
-
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+package st.examples.problems;
 
 
 public class LockTest {

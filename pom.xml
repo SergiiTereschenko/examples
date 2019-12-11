@@ -41,6 +41,8 @@
         <module>spring-test</module>
         <module>misc</module>
         <module>spring-jsp</module>
+        <module>docker-test</module>
+        <module>coffee-pack</module>
     </modules>
 
 </project>

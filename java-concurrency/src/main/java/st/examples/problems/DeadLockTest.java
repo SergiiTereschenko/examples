@@ -1,8 +1,12 @@
-package st.examples.deadlocks;
+package st.examples.problems;
 
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ *  Java multi-threads issues:  Deadlock, Starvation, Live-lock и Race Condition
+ */
 
 /**
  * Shows difference in thread-dump  (Run main, then, Ctrl + Break to see)    logs vs different locks.
