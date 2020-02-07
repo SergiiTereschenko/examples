@@ -38,11 +38,11 @@
 
     <modules>
         <module>java-concurrency</module>
-        <module>spring-test</module>
         <module>misc</module>
-        <module>spring-jsp</module>
         <module>docker-test</module>
-        <module>coffee-pack</module>
+        <module>spring-jsp</module>
+        <module>spring-boot-ex</module>
+        <module>spring-ex</module>
     </modules>
 
 </project>

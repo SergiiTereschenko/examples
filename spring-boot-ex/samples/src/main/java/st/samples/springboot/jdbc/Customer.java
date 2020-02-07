@@ -1,4 +1,4 @@
-package st.example.spring.jdbc;
+package st.samples.springboot.jdbc;
 
 public class Customer {
     private long id;
