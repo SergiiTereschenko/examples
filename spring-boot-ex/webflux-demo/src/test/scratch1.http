@@ -1,0 +1,37 @@
+
+POST http://localhost:8080/create
+Content-Type: application/json
+accept: application/json
+
+{
+  "id":1,
+  "name":"user_1",
+  "salary":101
+}
+
+###
+POST http://localhost:8080/create
+Content-Type: application/json
+
+{
+  "id":2,
+  "name":"user_2",
+  "salary":102
+}
+
+
+###
+PUT http://localhost:8080/update
+Content-Type: application/json
+
+{
+    "id":2,
+    "name":"user_2",
+    "salary":103
+}
+
+###
+GET http://localhost:8080/generate
+Accept: application/json
+
+###
