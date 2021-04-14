@@ -43,6 +43,7 @@
         <module>spring-jsp</module>
         <module>spring-boot-ex</module>
         <module>spring-ex</module>
+        <module>reactive</module>
     </modules>
 
 </project>

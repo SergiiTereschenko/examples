@@ -3,18 +3,21 @@ package st.more.race;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
  * Demo of two threads updating the same memory without synchronization.
  */
 final class CounterDataRaceMain {
 
-    private static final int[] counter = new int[]{0};
+    private static final int[] counter_w_race_condition = new int[]{0};
+    private static transient int counter_w_race_condition2 = 0;
+    private static final AtomicIntegerArray COUNTER_WO_RACE_CONDITION = new AtomicIntegerArray(1);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newCachedThreadPool();
 
-        int numThreads = 10;
+        int numThreads = 10; //10;
         CountDownLatch latch = new CountDownLatch(numThreads);
 
         List<Future<?>> futures = new ArrayList<>();
@@ -23,12 +26,15 @@ final class CounterDataRaceMain {
             futures.add(executorService.submit(() -> {
                 System.out.println(Thread.currentThread().getName());
 
-                waitUntilReady(latch);
+//                waitUntilReady(latch);
 
                 System.out.println("Goooo!");
-                for (int j = 0; j < 1_000_000; j++) {
+//                for (int j = 0; j < 1_000_000; j++) {
+                for (int j = 0; j < 10_000; j++) {
                     // data race here
-                    counter[0]++;
+                    counter_w_race_condition[0]++;
+                    COUNTER_WO_RACE_CONDITION.incrementAndGet(0);
+                    counter_w_race_condition2++;
                 }
             }));
         }
@@ -39,7 +45,9 @@ final class CounterDataRaceMain {
 
         executorService.shutdown();
 
-        System.out.println(counter[0]);
+        System.out.println(counter_w_race_condition[0]);
+        System.out.println(COUNTER_WO_RACE_CONDITION.get(0));
+        System.out.println(counter_w_race_condition2);
     }
 
     private static void waitUntilReady(CountDownLatch latch) {
