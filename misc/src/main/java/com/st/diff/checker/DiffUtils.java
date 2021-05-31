@@ -1,12 +1,17 @@
 package com.st.diff.checker;
 
 
-import java.util.Arrays;
-
 public class DiffUtils {
 
-    public static boolean diffChecker(int... arr) {
-        Arrays.sort(arr);
+
+    public static void main(String[] args) {
+        diffChecker(3,4,5,2);
+    }
+
+    static boolean diffChecker(int... arr) {
+//        Arrays.sort(arr);
+        arr = bubbleSort(arr);
+
         for (int i = 1; i < arr.length; i++) {
             if (i + 1 == arr.length) {
                 return true;
@@ -21,7 +26,7 @@ public class DiffUtils {
     }
 
 
-    public static int[] bubbleSort(int... array) {
+    static int[] bubbleSort(int... array) {
         boolean swapped = true;
         int j = 0;
         int tmp;
